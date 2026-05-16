@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Élite : Transformation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --dark-2: #1a1a1a;
+    --dark-3: #222222;
+    --border: rgba(255,255,255,0.08);
+    --border-light: rgba(255,255,255,0.15);
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: rgba(201,168,76,0.15);
+    --gold-dim2: rgba(201,168,76,0.08);
+    --text: #F5F0E8;
+    --text-muted: #9A9490;
+    --text-dim: #6A6460;
+    --accent: #4A90E2;
+    --green: #5DBF8A;
+    --red: #E05555;
+    --orange: #E07C40;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--black);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,10,0.95);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    padding: 0 3rem;
+    display: flex; align-items: center; gap: 0;
+    height: 56px;
+  }
+  .nav-brand {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    margin-right: auto;
+    text-transform: uppercase;
+  }
+  .nav-tabs { display: flex; gap: 0; height: 100%; }
+  .nav-tab {
+    height: 100%;
+    padding: 0 1.25rem;
+    border: none; background: none;
+    color: var(--text-muted);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ─── PAGES ─── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: 7rem 3rem 5rem;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim2);
+    background: var(--gold-dim2);
+    padding: 5px 16px; border-radius: 20px;
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero-sub {
+    font-size: 16px; color: var(--text-muted);
+    max-width: 600px; margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 3rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+
+  /* ─── CONTENT LAYOUT ─── */
+  .content-wrap {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 3rem 3rem 6rem;
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-tag {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .section-desc {
+    margin-top: 0.75rem;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* ─── PHASE CARD ─── */
+  .phase-banner {
+    background: var(--dark-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: start;
+  }
+  .phase-banner h2 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--gold-light);
+    margin-bottom: 0.4rem;
+  }
+  .phase-banner p { color: var(--text-muted); font-size: 14px; }
+  .phase-meta {
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 2;
+  }
+  .phase-meta strong { color: var(--gold); font-size: 13px; }
+
+  /* ─── CONTENT BLOCKS ─── */
+  .block { margin-bottom: 2.5rem; }
+  .block-title {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .block-title::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  .block h3 {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .block p { color: var(--text-muted); font-size: 14px; line-height: 1.85; margin-bottom: 0.75rem; }
+  .block p strong { color: var(--text); font-weight: 500; }
+  .block p:last-child { margin-bottom: 0; }
+
+  /* ─── EXPLAINER BOX ─── */
+  .explain-box {
+    background: var(--dark-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.25rem 0;
+  }
+  .explain-box .explain-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .explain-box p { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.75; }
+  .explain-box p strong { color: var(--text); }
+
+  /* ─── INFO GRID ─── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 1.25rem 0;
+  }
+  .info-card {
+    background: var(--dark-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .info-card .ic-label {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.4rem;
+  }
+  .info-card .ic-value {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--gold-light);
+  }
+  .info-card .ic-sub { font-size: 12px; color: var(--text-muted); margin-top: 0.25rem; }
+
+  /* ─── TABLE ─── */
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border-light);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  td:first-child { color: var(--text); font-weight: 500; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--dark-2); }
+
+  /* ─── LIST ─── */
+  .custom-list {
+    list-style: none;
+    margin: 1rem 0;
+  }
+  .custom-list li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .custom-list li:last-child { border-bottom: none; }
+  .custom-list li::before {
+    content: '▸';
+    color: var(--gold);
+    font-size: 12px;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .custom-list li strong { color: var(--text); font-weight: 500; }
+
+  /* ─── FORMULA BOX ─── */
+  .formula {
+    background: var(--dark-3);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: var(--gold-light);
+    margin: 1.25rem 0;
+    overflow-x: auto;
+    line-height: 1.9;
+  }
+  .formula .comment { color: var(--text-dim); font-style: italic; }
+
+  /* ─── OBJECTIVE PILLS ─── */
+  .obj-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 1.25rem 0;
+  }
+  .obj-pill {
+    background: var(--gold-dim2);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .obj-pill .op-num {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .obj-pill .op-text { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ─── WEEK PLAN ─── */
+  .week-plan {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin: 1.25rem 0;
+  }
+  .day-box {
+    background: var(--dark-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+  }
+  .day-box .day-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.4rem; }
+  .day-box .day-type { font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.4; }
+  .day-box.train { border-color: rgba(201,168,76,0.3); }
+  .day-box.train .day-type { color: var(--gold-light); }
+  .day-box.rest { opacity: 0.5; }
+  .day-box.cardio { border-color: rgba(93,191,138,0.3); }
+  .day-box.cardio .day-type { color: var(--green); }
+
+  /* ─── INTENSITY GAUGE ─── */
+  .gauge-row {
+    display: flex; align-items: center; gap: 14px;
+    margin: 0.6rem 0;
+    font-size: 13px;
+  }
+  .gauge-label { width: 110px; color: var(--text); font-weight: 500; flex-shrink: 0; }
+  .gauge-bar {
+    flex: 1; height: 6px;
+    background: var(--dark-3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .gauge-fill { height: 100%; border-radius: 3px; }
+  .gauge-val { width: 60px; text-align: right; color: var(--text-muted); font-size: 12px; }
+
+  /* ─── WARNING BOX ─── */
+  .warn-box {
+    background: rgba(224,85,85,0.06);
+    border: 1px solid rgba(224,85,85,0.2);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 13px;
+    color: #E09090;
+    margin: 1.25rem 0;
+  }
+  .warn-box strong { color: var(--red); }
+
+  .success-box {
+    background: rgba(93,191,138,0.06);
+    border: 1px solid rgba(93,191,138,0.2);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 13px;
+    color: #8FD4AF;
+    margin: 1.25rem 0;
+  }
+  .success-box strong { color: var(--green); }
+
+  /* ─── MACRO BARS ─── */
+  .macro-row { margin: 0.75rem 0; }
+  .macro-header { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+  .macro-name { color: var(--text); font-weight: 500; }
+  .macro-val { color: var(--text-muted); }
+  .macro-track { height: 8px; background: var(--dark-3); border-radius: 4px; overflow: hidden; }
+  .macro-fill { height: 100%; border-radius: 4px; }
+
+  /* ─── DIVIDER ─── */
+  .divider { height: 1px; background: var(--border); margin: 2.5rem 0; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1rem; }
+    .nav-tab { padding: 0 0.75rem; font-size: 10px; }
+    .hero, .content-wrap { padding: 3rem 1.25rem; }
+    .info-grid { grid-template-columns: 1fr; }
+    .obj-grid { grid-template-columns: 1fr 1fr; }
+    .week-plan { grid-template-columns: repeat(4, 1fr); }
+    .hero-stats { gap: 1.5rem; }
+    .phase-banner { grid-template-columns: 1fr; }
+    .phase-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Performance Élite</span>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('intro')">Introduction</button>
+    <button class="nav-tab" onclick="showPage('phase1')">Phase 1</button>
+    <button class="nav-tab" onclick="showPage('phase2')">Phase 2</button>
+    <button class="nav-tab" onclick="showPage('phase3')">Phase 3</button>
+    <button class="nav-tab" onclick="showPage('nutrition')">Nutrition</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE : INTRO -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="page-intro" class="page active">
+
+  <div class="hero">
+    <span class="hero-badge">Programme Scientifique de Recomposition</span>
+    <h1>Performance Élite :<br><em>Transformation</em></h1>
+    <p class="hero-sub">
+      Ce programme n'est pas un régime. Ce n'est pas un simple plan d'entraînement.
+      C'est un protocole de recomposition corporelle construit sur des données de physiologie de l'effort —
+      conçu pour que tu gagnes du muscle et perdes de la graisse <strong style="color:var(--text)">en même temps</strong>.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Phases progressives</span></div>
+      <div class="stat-item"><span class="stat-num">16</span><span class="stat-label">Semaines max</span></div>
+      <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">Auto-régulé</span></div>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+
+    <div class="section-header">
+      <span class="section-tag">Comprendre avant d'agir</span>
+      <h2 class="section-title">Pourquoi ce programme fonctionne — et pourquoi les autres non</h2>
+      <p class="section-desc">Avant de toucher un haltère ou de modifier ton alimentation, tu dois comprendre le mécanisme. Cette introduction n'est pas optionnelle.</p>
+    </div>
+
+    <!-- BLOC 1 : L'erreur commune -->
+    <div class="block">
+      <div class="block-title">L'erreur que tout le monde fait</div>
+      <h3>Le mythe du "manger moins, bouger plus"</h3>
+      <p>La plupart des programmes de perte de poids t'imposent un <strong>déficit calorique brut</strong> — tu manges moins, tu maigris. Résultat réel : oui, tu perds du poids. Mais une grosse partie de ce poids vient du <strong>muscle</strong>, pas de la graisse.</p>
+      <p>Résultat à 3 mois : tu es plus léger sur la balance, mais tu as le même pourcentage de graisse corporelle (voire plus), une silhouette moins définie, et un métabolisme ralenti qui va tout reprendre dès que tu manges normalement.</p>
+
+      <div class="explain-box">
+        <div class="explain-label">Pourquoi ça arrive</div>
+        <p>En déficit calorique sévère sans entraînement en résistance, ton corps interprète la situation comme une famine. Il dégrade la <strong>masse musculaire</strong> pour produire du glucose (néoglucogenèse). Tu perds du muscle, pas de la graisse. Ce programme est conçu pour empêcher exactement ça.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BLOC 2 : La science -->
+    <div class="block">
+      <div class="block-title">La science derrière la recomposition</div>
+      <h3>Deux processus biologiques simultanés</h3>
+      <p>Construire du muscle et brûler de la graisse sont deux processus qui semblent opposés — l'un nécessite de l'énergie (anabolisme), l'autre libère de l'énergie (catabolisme). La question est : comment les activer ensemble ?</p>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="ic-label">Signal "construire" du muscle</div>
+          <div class="ic-value">mTORC1</div>
+          <div class="ic-sub">Activé par : la charge mécanique (musculation) + les protéines (leucine)</div>
+        </div>
+        <div class="info-card">
+          <div class="ic-label">Signal "brûler" les graisses</div>
+          <div class="ic-value">AMPK</div>
+          <div class="ic-sub">Activé par : déficit énergétique léger + cardio + faible insulinémie</div>
+        </div>
+      </div>
+
+      <div class="explain-box">
+        <div class="explain-label">En termes simples</div>
+        <p><strong>mTORC1</strong> est l'interrupteur anabolique : il dit à tes muscles "construis-toi". Il est activé de manière intense mais <strong>courte</strong> (1 à 4h après l'entraînement). <strong>AMPK</strong> est le capteur d'énergie : il dit à tes cellules "brûle des graisses pour carburant". Il fonctionne <strong>en continu</strong>, surtout en dehors des repas et de l'entraînement. Ce programme les utilise tous les deux sur des créneaux différents.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BLOC 3 : La clé -->
+    <div class="block">
+      <div class="block-title">Le concept central</div>
+      <h3>La flexibilité métabolique — ce que la plupart des gens n'ont pas</h3>
+      <p>La <strong>flexibilité métabolique</strong> est ta capacité à switcher efficacement entre deux sources de carburant : les glucides et les graisses. Un corps <strong>métaboliquement flexible</strong> brûle les graisses facilement quand il y a peu de glucides disponibles, et utilise les glucides efficacement quand tu t'entraînes.</p>
+      <p>Un corps <strong>métaboliquement inflexible</strong> (cas de la majorité des gens sédentaires) ne sait brûler que les glucides. Si tu lui en donnes moins, il dégrade le muscle au lieu de brûler les graisses.</p>
+
+      <div class="success-box">
+        <strong>L'objectif de la Phase 1</strong> de ce programme est de restaurer et maximiser ta flexibilité métabolique — avant même de parler de déficit calorique. C'est la fondation de tout ce qui suit.
+      </div>
+
+      <table>
+        <thead><tr><th>Indicateur</th><th>Individu inflexible</th><th>Individu flexible</th></tr></thead>
+        <tbody>
+          <tr><td>À jeun le matin</td><td>Fatigue, brouillard mental</td><td>Énergie stable</td></tr>
+          <tr><td>Sans glucides 3h</td><td>Fringale intense, irritabilité</td><td>Pas de fringale notable</td></tr>
+          <tr><td>Pendant l'entraînement</td><td>Dépend des glucides uniquement</td><td>Utilise graisses + glucides selon l'intensité</td></tr>
+          <tr><td>En déficit calorique</td><td>Perd du muscle</td><td>Perd de la graisse</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BLOC 4 : RPE/RIR -->
+    <div class="block">
+      <div class="block-title">Vocabulaire essentiel du programme</div>
+      <h3>RPE et RIR — l'auto-régulation de l'intensité</h3>
+      <p>Ce programme n'utilise pas de % de 1RM fixés à l'avance. À la place, il utilise le <strong>RPE (Rate of Perceived Exertion)</strong> et le <strong>RIR (Reps In Reserve)</strong>. Voici pourquoi c'est supérieur.</p>
+
+      <div class="explain-box">
+        <div class="explain-label">Pourquoi pas les % de 1RM ?</div>
+        <p>Ton niveau de force varie chaque jour selon ton sommeil, ton niveau de stress, ta récupération. Un <strong>squat à 80% de ton 1RM un jour de fatigue</strong> peut être équivalent à un squat à 90% un jour de forme. Utiliser un % fixe te fait soit sur-travailler (risque de blessure), soit sous-travailler (stimulus insuffisant). Le RPE/RIR s'adapte à toi.</p>
+      </div>
+
+      <table>
+        <thead><tr><th>RPE</th><th>RIR</th><th>Ce que tu ressens</th><th>Usage dans ce programme</th></tr></thead>
+        <tbody>
+          <tr><td>6</td><td>4–5 reps restantes</td><td>Effort modéré, tu pourrais faire 4-5 reps de plus facilement</td><td>Échauffement, technique</td></tr>
+          <tr><td>7</td><td>3 reps restantes</td><td>Effort notable, tu aurais pu faire 3 reps de plus</td><td>Phase 1 — volume</td></tr>
+          <tr><td>8</td><td>2 reps restantes</td><td>Effort élevé, tu aurais pu faire 2 reps de plus</td><td>Phase 2 — hypertrophie</td></tr>
+          <tr><td>9</td><td>1 rep restante</td><td>Très difficile, encore 1 rep possible</td><td>Phase 2/3 — intensification</td></tr>
+          <tr><td>10</td><td>0 — défaillance</td><td>Tu ne peux plus faire une seule rep</td><td>Techniques spéciales, rare</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- end content-wrap -->
+</div><!-- end page-intro -->
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE : PHASE 1 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="page-phase1" class="page">
+<div class="content-wrap">
+
+  <div class="section-header">
+    <span class="section-tag">Phase 1 — Semaines 1 à 6</span>
+    <h2 class="section-title">Fondation Métabolique<br>& Sensibilisation Neurale</h2>
+    <p class="section-desc">La phase que tout le monde veut sauter. Ne la saute pas. C'est ici que tout se construit.</p>
+  </div>
+
+  <div class="phase-banner">
+    <div>
+      <h2>Pourquoi commencer lentement ?</h2>
+      <p>Parce que ton corps doit apprendre avant de performer. Les tendons, les ligaments, le système nerveux — tout s'adapte plus lentement que les muscles. Brûler les étapes = blessure dans 4 semaines. Respecter la phase = progression sur 16 semaines.</p>
+    </div>
+    <div class="phase-meta">
+      <div><strong>4 à 6 semaines</strong><br>durée</div>
+      <div style="margin-top:0.5rem"><strong>3–4×</strong><br>par semaine</div>
+      <div style="margin-top:0.5rem"><strong>RPE 6–7.5</strong><br>intensité</div>
+    </div>
+  </div>
+
+  <!-- OBJECTIFS -->
+  <div class="block">
+    <div class="block-title">Objectifs de la Phase 1</div>
+    <p>Cette phase poursuit 5 objectifs biologiques précis. Chaque séance contribue à tous ces objectifs simultanément.</p>
+
+    <div class="obj-grid">
+      <div class="obj-pill"><span class="op-num">01</span><span class="op-text">Améliorer la sensibilité à l'insuline</span></div>
+      <div class="obj-pill"><span class="op-num">02</span><span class="op-text">Maîtriser les mouvements de base</span></div>
+      <div class="obj-pill"><span class="op-num">03</span><span class="op-text">Préparer tendons & ligaments</span></div>
+      <div class="obj-pill"><span class="op-num">04</span><span class="op-text">Apprendre à calibrer ton effort (RPE)</span></div>
+      <div class="obj-pill"><span class="op-num">05</span><span class="op-text">Construire ta base aérobie</span></div>
+      <div class="obj-pill"><span class="op-num">06</span><span class="op-text">Collecter tes données de référence</span></div>
+    </div>
+
+    <div class="explain-box">
+      <div class="explain-label">Objectif 1 expliqué — la sensibilité à l'insuline</div>
+      <p>L'insuline est l'hormone qui transporte les glucides que tu manges vers les cellules. Quand tu es <strong>insulino-résistant</strong> (cas fréquent chez les sédentaires et personnes en surpoids), les glucides vont préférentiellement dans les cellules graisseuses plutôt que dans les muscles. L'entraînement en résistance augmente les <strong>transporteurs GLUT4</strong> dans le muscle — concrètement, tes muscles absorbent mieux les glucides et ton corps stocke moins de graisse.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- NUTRITION P1 -->
+  <div class="block">
+    <div class="block-title">Nutrition — Phase 1</div>
+    <h3>Equilibre isocalorique : ni surplus, ni déficit</h3>
+    <p>En Phase 1, tu manges à l'équilibre — c'est-à-dire la quantité d'énergie exacte que tu dépenses. L'objectif n'est <strong>pas encore de perdre de la graisse</strong>. L'objectif est d'optimiser comment ton corps utilise les nutriments.</p>
+
+    <div class="explain-box">
+      <div class="explain-label">Pourquoi ne pas commencer avec un déficit ?</div>
+      <p>Commencer avec un déficit calorique quand ton corps n'est pas encore entraîné revient à essayer de construire une maison sans fondations. Ton corps n'est pas encore capable de <strong>préserver le muscle</strong> en déficit si l'entraînement n'est pas maîtrisé. On pose les bases d'abord, le déficit viendra en Phase 2.</p>
+    </div>
+
+    <h3 style="margin-top:1.5rem">Calcul de ta cible calorique</h3>
+    <p>Utilise la formule de <strong>Mifflin-St Jeor</strong> — la plus fiable en population générale :</p>
+
+    <div class="formula">
+      <span class="comment">// Métabolisme de base (MB) :</span><br>
+      Hommes : MB = (10 × poids kg) + (6.25 × taille cm) − (5 × âge) + 5<br>
+      Femmes : MB = (10 × poids kg) + (6.25 × taille cm) − (5 × âge) − 161<br><br>
+      <span class="comment">// Dépense totale (TDEE) = ton objectif calorique Phase 1 :</span><br>
+      TDEE = MB × facteur d'activité<br><br>
+      <span class="comment">// Facteur d'activité :</span><br>
+      Sédentaire (bureau, peu de sport) ............... × 1.2<br>
+      Légèrement actif (1-3 séances/sem.) ............. × 1.375<br>
+      Modérément actif (3-5 séances/sem.) ............. × 1.55<br>
+      Très actif (6-7 séances/sem. intenses) .......... × 1.725
+    </div>
+
+    <div class="warn-box">
+      <strong>Attention :</strong> La plupart des gens surestiment leur niveau d'activité de 20 à 25%. Si tu hésites entre deux catégories, prends la plus basse et observe ton poids pendant 2 semaines. Ajuste ensuite de ±150 kcal.
+    </div>
+
+    <h3 style="margin-top:1.5rem">Répartition des macronutriments</h3>
+    <p>Une fois ta cible calorique définie, voici comment répartir tes apports :</p>
+
+    <div class="macro-row">
+      <div class="macro-header"><span class="macro-name">🥩 Protéines — 1.8 à 2.4 g/kg de poids corporel</span><span class="macro-val">~30% des kcal</span></div>
+      <div class="macro-track"><div class="macro-fill" style="width:30%; background: var(--gold);"></div></div>
+    </div>
+    <div class="explain-box" style="margin-top:0.5rem">
+      <div class="explain-label">Pourquoi autant de protéines ?</div>
+      <p>Les protéines sont les briques qui construisent le muscle. Sans apport protéique suffisant, même le meilleur entraînement ne produira pas de croissance musculaire. De plus, les protéines ont un <strong>effet thermique élevé</strong> (environ 25-30% des calories des protéines sont brûlées pour les digérer) et procurent une forte satiété — ce qui facilite le contrôle de l'alimentation. Exemples concrets : poulet, œufs, poisson, fromage blanc 0%, whey.</p>
+    </div>
+
+    <div class="macro-row" style="margin-top:1rem">
+      <div class="macro-header"><span class="macro-name">🍚 Glucides — 3 à 5 g/kg de poids corporel</span><span class="macro-val">~45% des kcal</span></div>
+      <div class="macro-track"><div class="macro-fill" style="width:45%; background: var(--accent);"></div></div>
+    </div>
+    <div class="explain-box" style="margin-top:0.5rem">
+      <div class="explain-label">Pourquoi pas de low carb ?</div>
+      <p>En Phase 1, tu as besoin de glucides pour <strong>recharger le glycogène musculaire</strong> (le carburant de ta musculation) et pour activer l'insuline de manière contrôlée afin de déclencher la construction musculaire. Le low carb agressif en Phase 1 compromet la qualité de tes entraînements et ralentit l'adaptation musculaire. Préfère les glucides complexes : riz, patate douce, flocons d'avoine, légumineuses.</p>
+    </div>
+
+    <div class="macro-row" style="margin-top:1rem">
+      <div class="macro-header"><span class="macro-name">🥑 Lipides — 0.8 à 1.2 g/kg de poids corporel</span><span class="macro-val">~25% des kcal</span></div>
+      <div class="macro-track"><div class="macro-fill" style="width:25%; background: var(--orange);"></div></div>
+    </div>
+    <div class="explain-box" style="margin-top:0.5rem">
+      <div class="explain-label">Le rôle des lipides</div>
+      <p>Les lipides sont essentiels à la <strong>production hormonale</strong> (testostérone, cortisol, hormones thyroïdiennes). Un apport trop faible en graisses (<0.5 g/kg) effondre les niveaux de testostérone et compromet la construction musculaire. Priorité aux sources de qualité : oléagineux, huile d'olive, œufs entiers, poissons gras, avocat.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ENTRAINEMENT P1 -->
+  <div class="block">
+    <div class="block-title">Entraînement — Phase 1</div>
+    <h3>Structure : Full-Body, 3 à 4 fois par semaine</h3>
+    <p>En Phase 1, tu travailles tout le corps à chaque séance. Pourquoi ? Parce que la fréquence de stimulation est le driver principal de l'adaptation <strong>neurale</strong> (connexion cerveau-muscle) chez les débutants et les reprenants. Chaque muscle est sollicité 3× par semaine au lieu d'1×.</p>
+
+    <div class="week-plan">
+      <div class="day-box train"><div class="day-label">Lun</div><div class="day-type">Séance A</div></div>
+      <div class="day-box rest"><div class="day-label">Mar</div><div class="day-type">Repos actif</div></div>
+      <div class="day-box train"><div class="day-label">Mer</div><div class="day-type">Séance B</div></div>
+      <div class="day-box cardio"><div class="day-label">Jeu</div><div class="day-type">Cardio LISS</div></div>
+      <div class="day-box train"><div class="day-label">Ven</div><div class="day-type">Séance A</div></div>
+      <div class="day-box cardio"><div class="day-label">Sam</div><div class="day-type">Cardio LISS</div></div>
+      <div class="day-box rest"><div class="day-label">Dim</div><div class="day-type">Repos total</div></div>
+    </div>
+
+    <div class="explain-box">
+      <div class="explain-label">Repos actif vs repos total</div>
+      <p>Le <strong>repos actif</strong> (mardi) = marche 30 min, étirements, mobilité légère. Il favorise la circulation sanguine et accélère la récupération musculaire sans générer de fatigue supplémentaire. Le <strong>repos total</strong> (dimanche) = aucun effort physique. Le système nerveux se régénère.</p>
+    </div>
+
+    <h3 style="margin-top:1.5rem">Séance Type A — Expliquée</h3>
+
+    <table>
+      <thead><tr><th>Exercice</th><th>Séries × Reps</th><th>RPE cible</th><th>Repos</th><th>Pourquoi cet exercice</th></tr></thead>
+      <tbody>
+        <tr><td>Squat ou Goblet Squat</td><td>3 × 8–10</td><td>RPE 7</td><td>2 min</td><td>Quadriceps, fessiers, stabilité globale. Mouvement fondamental du bas du corps.</td></tr>
+        <tr><td>Rowing haltère / barre</td><td>3 × 8–10</td><td>RPE 7</td><td>90 sec</td><td>Dos, biceps, posture. Contrebalance le développé couché et prévient les déséquilibres.</td></tr>
+        <tr><td>Développé haltères</td><td>3 × 8–10</td><td>RPE 7</td><td>90 sec</td><td>Pectoraux, épaules, triceps. Mouvement de poussée horizontal essentiel.</td></tr>
+        <tr><td>Hip Hinge / Romanian DL</td><td>3 × 10–12</td><td>RPE 6.5</td><td>2 min</td><td>Chaîne postérieure (ischio-jambiers, fessiers, érecteurs). Prévention des lombaires.</td></tr>
+        <tr><td>Tirage vertical (câble/barre)</td><td>3 × 10–12</td><td>RPE 7</td><td>90 sec</td><td>Grand dorsal, biceps. Complète l'équilibre poussée/tirade vertical.</td></tr>
+        <tr><td>Gainage planche</td><td>3 × 30–45 sec</td><td>RPE 7</td><td>60 sec</td><td>Core, stabilité lombaire. Fondation de tous les mouvements lourds.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="explain-box">
+      <div class="explain-label">Comment lire le RPE pendant ta séance</div>
+      <p>À chaque fin de série, pose-toi la question : <em>"Combien de répétitions j'aurais encore pu faire ?"</em> Si tu réponds <strong>3 ou plus</strong> → tu es en dessous de RPE 7, charge légèrement. Si tu réponds <strong>0 ou 1</strong> → tu es au-dessus de RPE 8, réduis. Le but en Phase 1 : finir chaque série en sentant que tu <strong>aurais pu faire 2-3 reps supplémentaires</strong>.</p>
+    </div>
+
+    <h3 style="margin-top:1.5rem">Paramètres d'intensité — Phase 1</h3>
+
+    <div class="gauge-row">
+      <span class="gauge-label">RPE moyen</span>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:65%; background: var(--green);"></div></div>
+      <span class="gauge-val">6 – 7.5</span>
+    </div>
+    <div class="gauge-row">
+      <span class="gauge-label">RIR (reps restantes)</span>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:60%; background: var(--green);"></div></div>
+      <span class="gauge-val">3 – 4 reps</span>
+    </div>
+    <div class="gauge-row">
+      <span class="gauge-label">Charge relative</span>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:70%; background: var(--accent);"></div></div>
+      <span class="gauge-val">65 – 75% 1RM</span>
+    </div>
+    <div class="gauge-row">
+      <span class="gauge-label">Volume hebdo</span>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:50%; background: var(--accent);"></div></div>
+      <span class="gauge-val">10–14 séries/muscle</span>
+    </div>
+    <div class="gauge-row">
+      <span class="gauge-label">Tempo excentrique</span>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:55%; background: var(--gold);"></div></div>
+      <span class="gauge-val">2–3 secondes</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CARDIO P1 -->
+  <div class="block">
+    <div class="block-title">Cardio — Phase 1</div>
+    <h3>LISS : Low Intensity Steady State</h3>
+    <p>Le cardio de Phase 1 est exclusivement en <strong>basse intensité continue</strong> : marche rapide, vélo tranquille, natation lente, elliptique à rythme modéré. Durée : <strong>30 à 45 minutes</strong>, 2 fois par semaine.</p>
+
+    <div class="explain-box">
+      <div class="explain-label">Pourquoi pas de HIIT en Phase 1 ?</div>
+      <p>Le HIIT (sprint, fractionné) génère une fatigue neuromusculaire significative. En Phase 1, ton corps n'a pas encore la capacité de récupérer simultanément d'une musculation 3-4×/semaine ET de séances de HIIT. Le LISS, lui, stimule la <strong>biogenèse mitochondriale</strong> (création de nouvelles mitochondries, les "centrales énergétiques" de la cellule) sans fatiguer le système nerveux. C'est le cardio qui améliore ta capacité à brûler les graisses sans compromettre ta récupération musculaire.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-label">Zone de fréquence cardiaque cible</div>
+        <div class="ic-value">60–70%</div>
+        <div class="ic-sub">de ta FC max (220 − âge). Tu dois pouvoir parler normalement.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Fréquence recommandée</div>
+        <div class="ic-value">2×/sem</div>
+        <div class="ic-sub">Jours séparés de la musculation si possible, ou après la séance.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- RECUPERATION P1 -->
+  <div class="block">
+    <div class="block-title">Récupération & Auto-régulation</div>
+    <h3>Écouter son corps n'est pas optionnel</h3>
+    <p>Ce programme utilise un système d'<strong>auto-régulation quotidienne</strong>. Avant chaque séance, évalue ton état sur ces critères :</p>
+
+    <ul class="custom-list">
+      <li><strong>Qualité du sommeil</strong> : Moins de 6h ou sommeil fragmenté → réduis le volume de 20%, travaille en RPE 6 max.</li>
+      <li><strong>Douleurs musculaires résiduelles</strong> : Courbatures sévères sur les groupes ciblés → remplace par un autre groupe ou séance de mobilité.</li>
+      <li><strong>Niveau d'énergie général</strong> : Si tu te sens épuisé avant même de commencer → entraînement léger ou repos actif uniquement.</li>
+      <li><strong>Motivation/mental</strong> : État émotionnel négatif intense → facteur de risque lésionnel. Adapte l'intensité vers le bas.</li>
+    </ul>
+
+    <div class="success-box">
+      <strong>Règle d'or Phase 1 :</strong> Il vaut mieux faire 80% d'une séance en pleine récupération que 100% d'une séance en état de fatigue. La progression en musculation est une course de fond, pas un sprint.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CRITÈRES PASSAGE -->
+  <div class="block">
+    <div class="block-title">Critères de passage en Phase 2</div>
+    <p>Tu passes en Phase 2 quand tu remplis <strong>les 4 conditions suivantes</strong> :</p>
+    <ul class="custom-list">
+      <li><strong>Technique maîtrisée</strong> sur les 6 exercices fondamentaux (tu peux t'auto-filmer et vérifier que la mécanique est correcte)</li>
+      <li><strong>RPE calibré</strong> : Tu peux estimer avec précision combien de reps il te reste avant défaillance</li>
+      <li><strong>Récupération stable</strong> : Tu récupères complètement entre les séances (pas de courbatures permanentes)</li>
+      <li><strong>Minimum 4 semaines complètes</strong> effectuées, idéalement 5-6 si tu débutais de zéro</li>
+    </ul>
+  </div>
+
+</div>
+</div><!-- end page-phase1 -->
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE : PHASE 2 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="page-phase2" class="page">
+<div class="content-wrap">
+
+  <div class="section-header">
+    <span class="section-tag">Phase 2 — Semaines 5 à 12</span>
+    <h2 class="section-title">Hypertrophie Maximale<br>& Oxydation Lipidique</h2>
+    <p class="section-desc">C'est ici que la recomposition corporelle s'accélère vraiment. Tu construis du muscle ET tu perds de la graisse simultanément.</p>
+  </div>
+
+  <div class="phase-banner">
+    <div>
+      <h2>Le cœur du programme</h2>
+      <p>La Phase 2 introduit un déficit calorique modéré, une intensité d'entraînement plus élevée et une organisation en Split (groupes musculaires séparés). C'est la phase la plus longue et la plus productive du programme.</p>
+    </div>
+    <div class="phase-meta">
+      <div><strong>6 à 8 semaines</strong><br>durée</div>
+      <div style="margin-top:0.5rem"><strong>4×</strong><br>par semaine</div>
+      <div style="margin-top:0.5rem"><strong>RPE 7–9</strong><br>intensité</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Les 3 drivers de l'hypertrophie</div>
+    <h3>Comprendre ce qui fait vraiment grossir le muscle</h3>
+    <p>La science de l'hypertrophie a identifié 3 mécanismes qui déclenchent la croissance musculaire. Ce programme les exploite tous les trois de manière ciblée :</p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-label">Mécanisme n°1 (principal)</div>
+        <div class="ic-value" style="font-size:1.1rem">Tension Mécanique</div>
+        <div class="ic-sub">La charge sur le muscle. C'est le signal principal. Obtenu avec des charges lourdes ou un effort proche de la défaillance.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Mécanisme n°2</div>
+        <div class="ic-value" style="font-size:1.1rem">Stress Métabolique</div>
+        <div class="ic-sub">La "brûlure" dans le muscle. Accumulation de lactate. Obtenu avec des séries longues (12–20 reps) et courts temps de repos.</div>
+      </div>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-label">Mécanisme n°3 (à doser)</div>
+        <div class="ic-value" style="font-size:1.1rem">Dommages Musculaires</div>
+        <div class="ic-sub">Les micro-lésions qui déclenchent la réparation et la croissance. Obtenu par phase excentrique lente et position étirée sous charge.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Application pratique</div>
+        <div class="ic-value" style="font-size:1.1rem">DUP</div>
+        <div class="ic-sub">Périodisation Ondulatoire Quotidienne. Chaque séance cible un mécanisme différent. Plus de variété = plus d'adaptation.</div>
+      </div>
+    </div>
+
+    <div class="explain-box">
+      <div class="explain-label">La périodisation ondulatoire (DUP) — expliquée simplement</div>
+      <p>Au lieu de faire toujours les mêmes séries/reps chaque semaine, tu <strong>fais varier l'objectif de chaque séance</strong>. Séance du lundi : force (5×5, charges lourdes). Mercredi : hypertrophie (4×10, charges modérées). Vendredi : endurance musculaire (3×15–20, charges légères). Ton muscle reçoit 3 types de signaux différents par semaine → <strong>il s'adapte plus vite</strong> que si tu faisais toujours la même chose.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="block">
+    <div class="block-title">Nutrition — Phase 2</div>
+    <h3>Le déficit intelligent : 300 à 500 kcal en dessous du TDEE</h3>
+    <p>En Phase 2, tu entres en <strong>déficit calorique modéré</strong>. "Modéré" est le mot clé. Un déficit trop agressif (>700 kcal/jour) entraîne une dégradation musculaire. Un déficit insuffisant (<200 kcal/jour) ne permet pas de perdre de la graisse. La zone cible est <strong>300 à 500 kcal en dessous de ton TDEE</strong>.</p>
+
+    <div class="formula">
+      <span class="comment">// Cible calorique Phase 2 :</span><br>
+      Objectif = TDEE − 350 kcal  (point de départ recommandé)<br><br>
+      <span class="comment">// Résultat attendu :</span><br>
+      Perte de graisse théorique : ~0.3 à 0.5 kg/semaine<br>
+      Préservation musculaire : assurée par l'entraînement + apport protéique élevé
+    </div>
+
+    <h3 style="margin-top:1.5rem">Les jours de recharge (Refeed Days)</h3>
+    <p>En Phase 2, tu intègres <strong>1 à 2 jours de recharge glucidique par semaine</strong> — des jours où tu manges à l'équilibre (plus de déficit). Ce n'est pas de la triche. C'est une stratégie physiologique.</p>
+
+    <div class="explain-box">
+      <div class="explain-label">Pourquoi les Refeed Days sont essentiels</div>
+      <p>Après plusieurs jours de déficit calorique, ton corps réduit la production de <strong>leptine</strong> — l'hormone qui signale la satiété et maintient ton métabolisme actif. Une leptine basse = métabolisme ralenti + fringales intenses + perte musculaire accélérée. En remontant les glucides 1-2 jours par semaine, tu <strong>re-sensibilises la leptine</strong>, tu recharges le glycogène musculaire pour tes entraînements, et tu évites le plateau métabolique.</p>
+    </div>
+
+    <table>
+      <thead><tr><th>Type de jour</th><th>Fréquence</th><th>Calories</th><th>Glucides</th></tr></thead>
+      <tbody>
+        <tr><td>Jours d'entraînement</td><td>4×/sem</td><td>TDEE − 200</td><td>Élevés (autour de l'entraînement)</td></tr>
+        <tr><td>Jours de repos</td><td>2×/sem</td><td>TDEE − 500</td><td>Modérés</td></tr>
+        <tr><td>Jour de recharge (refeed)</td><td>1×/sem</td><td>TDEE + 0</td><td>Très élevés</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="block">
+    <div class="block-title">Programme d'entraînement — Phase 2</div>
+    <h3>Split Upper/Lower — 4 séances semaine</h3>
+
+    <div class="week-plan">
+      <div class="day-box train"><div class="day-label">Lun</div><div class="day-type">Upper Force</div></div>
+      <div class="day-box train"><div class="day-label">Mar</div><div class="day-type">Lower Hyp.</div></div>
+      <div class="day-box cardio"><div class="day-label">Mer</div><div class="day-type">Cardio</div></div>
+      <div class="day-box train"><div class="day-label">Jeu</div><div class="day-type">Upper Hyp.</div></div>
+      <div class="day-box train"><div class="day-label">Ven</div><div class="day-type">Lower Force</div></div>
+      <div class="day-box cardio"><div class="day-label">Sam</div><div class="day-type">LISS léger</div></div>
+      <div class="day-box rest"><div class="day-label">Dim</div><div class="day-type">Repos total</div></div>
+    </div>
+
+    <h3 style="margin-top:1.5rem">Paramètres d'intensité — Phase 2</h3>
+
+    <div class="gauge-row">
+      <span class="gauge-label">RPE moyen</span>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:82%; background: var(--orange);"></div></div>
+      <span class="gauge-val">7.5 – 9</span>
+    </div>
+    <div class="gauge-row">
+      <span class="gauge-label">RIR</span>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:30%; background: var(--orange);"></div></div>
+      <span class="gauge-val">1 – 3 reps</span>
+    </div>
+    <div class="gauge-row">
+      <span class="gauge-label">Volume hebdo</span>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:75%; background: var(--accent);"></div></div>
+      <span class="gauge-val">14–20 séries/muscle</span>
+    </div>
+
+    <div class="explain-box">
+      <div class="explain-label">Pourquoi l'intensité monte en Phase 2 ?</div>
+      <p>Pour déclencher l'hypertrophie, tu dois recruter les <strong>fibres musculaires de type II</strong> (les plus grosses, à plus fort potentiel de croissance). Ces fibres ne s'activent qu'à des intensités élevées ou quand les autres fibres sont épuisées (donc en fin de série à RPE 8-9). En Phase 1, tu avais besoin de baisser l'intensité pour apprendre les mouvements. En Phase 2, les mouvements sont maîtrisés → tu peux pousser plus fort en toute sécurité.</p>
+    </div>
+
+    <h3 style="margin-top:1.5rem">Techniques d'intensification (à introduire progressivement)</h3>
+    <ul class="custom-list">
+      <li><strong>Drop Set :</strong> Tu fais ta série normale, puis tu réduis la charge de 20-30% immédiatement et continues. Augmente le stress métabolique. À utiliser sur 1-2 exercices max par séance, pas sur les mouvements lourds.</li>
+      <li><strong>Rest-Pause :</strong> Tu approches la défaillance, tu repos 15 secondes, puis tu fais 2-3 reps supplémentaires avec la même charge. Très efficace pour accumuler du volume proche de la défaillance.</li>
+      <li><strong>Tempo excentrique contrôlé :</strong> Phase descente (excentrique) en 3-4 secondes. Génère plus de tension mécanique et de dommages musculaires contrôlés. Commence par 1 exercice principal par séance.</li>
+    </ul>
+  </div>
+
+</div>
+</div><!-- end page-phase2 -->
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE : PHASE 3 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="page-phase3" class="page">
+<div class="content-wrap">
+
+  <div class="section-header">
+    <span class="section-tag">Phase 3 — Semaines 11 à 16</span>
+    <h2 class="section-title">Spécialisation<br>& Optimisation Finale</h2>
+    <p class="section-desc">La phase d'affûtage. Tu consolides les gains, tu affines la composition, tu atteins ton pic de forme.</p>
+  </div>
+
+  <div class="phase-banner">
+    <div>
+      <h2>Moins de volume, plus d'intensité</h2>
+      <p>En Phase 3, on réduit le volume total mais on pousse l'intensité absolue plus haut. L'objectif est de densifier le tissu musculaire existant et d'optimiser la composition finale. Le cardio est réduit stratégiquement pour préserver la masse.</p>
+    </div>
+    <div class="phase-meta">
+      <div><strong>4 à 6 semaines</strong><br>durée</div>
+      <div style="margin-top:0.5rem"><strong>4×</strong><br>par semaine</div>
+      <div style="margin-top:0.5rem"><strong>RPE 8–10</strong><br>intensité</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Logique de la Phase 3</div>
+    <h3>Pourquoi réduire le volume ?</h3>
+    <p>Après 10-12 semaines d'entraînement, ton corps accumule une <strong>fatigue systémique</strong> significative. Cette fatigue masque tes gains réels — tes muscles sont plus forts et plus gros que ce que ta performance quotidienne reflète. En Phase 3, on réduit le volume (moins de séries totales) pour laisser la fatigue se dissiper et révéler pleinement la transformation.</p>
+
+    <div class="explain-box">
+      <div class="explain-label">Le modèle Fitness-Fatigue (simplifié)</div>
+      <p>Chaque entraînement génère deux effets simultanés : un gain de <strong>fitness</strong> (adaptation positive, durable) et une <strong>fatigue</strong> (inhibition temporaire). La fatigue se dissipe plus vite que le fitness ne décroît. En réduisant le volume en Phase 3, tu laisses la fatigue descendre → ta <strong>performance exprimée = fitness − fatigue</strong> atteint son maximum.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-label">Volume Phase 2 → Phase 3</div>
+        <div class="ic-value">−30%</div>
+        <div class="ic-sub">de séries totales par semaine. Même exercices, moins de volume.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Intensité Phase 2 → Phase 3</div>
+        <div class="ic-value">+10–15%</div>
+        <div class="ic-sub">de charge sur les mouvements principaux. Tu es plus reposé, tu peux lever plus lourd.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="block">
+    <div class="block-title">Nutrition — Phase 3</div>
+    <h3>Carb Cycling avancé</h3>
+    <p>La Phase 3 introduit un <strong>cycling glucidique structuré</strong> sur 4 types de journées. L'objectif : maintenir le tissu musculaire, brûler les dernières réserves de graisse, éviter le plateau.</p>
+
+    <table>
+      <thead><tr><th>Type de jour</th><th>Calories</th><th>Glucides</th><th>Protéines</th><th>Lipides</th></tr></thead>
+      <tbody>
+        <tr><td>Jour ÉLEVÉ (entraînement lourd)</td><td>TDEE + 0</td><td>4–5 g/kg</td><td>2.2 g/kg</td><td>0.8 g/kg</td></tr>
+        <tr><td>Jour MODÉRÉ (entraînement léger)</td><td>TDEE − 300</td><td>2–3 g/kg</td><td>2.4 g/kg</td><td>1.0 g/kg</td></tr>
+        <tr><td>Jour FAIBLE (repos)</td><td>TDEE − 500</td><td>0.5–1 g/kg</td><td>2.6 g/kg</td><td>1.2 g/kg</td></tr>
+      </tbody>
+    </table>
+
+    <div class="explain-box">
+      <div class="explain-label">Logique du Carb Cycling</div>
+      <p>Les glucides sont le carburant principal de la musculation intense. Tu en manges plus les jours où tu t'entraînes dur (pour performer et construire du muscle), et moins les jours de repos (où ton corps n'en a pas besoin → il brûle des graisses à la place). Les protéines augmentent les jours bas en glucides pour <strong>protéger le muscle</strong> quand l'apport calorique est réduit.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="block">
+    <div class="block-title">Transition post-programme</div>
+    <h3>Après la Phase 3 : que faire ?</h3>
+    <ul class="custom-list">
+      <li><strong>Semaine de décharge complète :</strong> 7 jours à RPE 5 maximum. Ton corps consolide les adaptations. Ne saute pas cette étape.</li>
+      <li><strong>Réévaluation complète :</strong> Refais toutes les mesures initiales (poids, mensurations, force sur les exercices clés). Quantifie ta progression.</li>
+      <li><strong>Nouvelle itération :</strong> Selon tes résultats, relance le programme depuis la Phase 2 avec des charges et un volume ajustés, ou recommence depuis la Phase 1 si tu as pris une longue pause.</li>
+      <li><strong>Phase de maintenance :</strong> Si tu es satisfait de ta composition, passe en phase de maintenance avec 3 séances/semaine et alimentation à l'équilibre.</li>
+    </ul>
+  </div>
+
+</div>
+</div><!-- end page-phase3 -->
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE : NUTRITION -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="page-nutrition" class="page">
+<div class="content-wrap">
+
+  <div class="section-header">
+    <span class="section-tag">Protocole Nutritionnel</span>
+    <h2 class="section-title">Stratégie Alimentaire<br>Intégrée</h2>
+    <p class="section-desc">La nutrition n'est pas une punition. C'est un outil de précision. Voici comment l'utiliser correctement.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Timing nutritionnel péri-entraînement</div>
+    <h3>Les fenêtres clés autour de l'entraînement</h3>
+    <p>Le <strong>timing des nutriments</strong> autour de l'entraînement optimise la performance, la récupération et la construction musculaire. Ce n'est pas le facteur le plus important (c'est la quantité totale journalière qui prime), mais c'est un avantage non négligeable.</p>
+
+    <table>
+      <thead><tr><th>Fenêtre</th><th>Timing</th><th>Objectif</th><th>Ce qu'il faut manger</th></tr></thead>
+      <tbody>
+        <tr><td>Pré-entraînement</td><td>60–90 min avant</td><td>Énergie disponible, pas de digestion en cours pendant l'effort</td><td>Glucides complexes (80–100g) + protéines (20–30g) + lipides limités (digestibilité)</td></tr>
+        <tr><td>Intra-entraînement (optionnel)</td><td>Pendant (si séance > 75 min)</td><td>Maintenir la glycémie, retarder la fatigue</td><td>Boisson glucosée légère (40–50g glucides simples) ou BCAA</td></tr>
+        <tr><td>Post-entraînement</td><td>Dans les 30–60 min</td><td>Déclencher la synthèse protéique, recharger le glycogène</td><td>Protéines rapides (30–40g whey ou blanc d'œuf) + glucides rapides (40–60g)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="explain-box">
+      <div class="explain-label">Pourquoi les protéines rapidement après l'entraînement ?</div>
+      <p>Pendant et juste après la séance, mTORC1 (le signal de construction musculaire) est maximal. Mais il a besoin de <strong>leucine</strong> (acide aminé clé) pour s'activer pleinement. Sans apport protéique rapide, la fenêtre anabolique est gaspillée. La whey protéine est idéale car elle est digérée et absorbée en 30-60 minutes, exactement dans la fenêtre optimale.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="block">
+    <div class="block-title">Supplémentation validée</div>
+    <h3>Ce qui fonctionne réellement — dosages et preuves</h3>
+    <p>Le marché de la supplémentation est rempli de produits inutiles. Ce tableau ne présente que les suppléments avec un niveau de preuve scientifique solide et une utilité réelle dans ce programme.</p>
+
+    <table>
+      <thead><tr><th>Supplément</th><th>Dosage</th><th>Timing</th><th>Bénéfice prouvé</th></tr></thead>
+      <tbody>
+        <tr><td>Créatine monohydrate</td><td>3–5 g/jour</td><td>N'importe quand (consistance > timing)</td><td>+5–10% de force, meilleure récupération, léger effet de volumisation cellulaire</td></tr>
+        <tr><td>Whey protéine</td><td>20–40 g/prise</td><td>Post-entraînement ou entre les repas si protéines insuffisantes</td><td>Complément protéique pratique. Aucun effet "magique" si les protéines alimentaires sont suffisantes.</td></tr>
+        <tr><td>Caféine</td><td>3–6 mg/kg de poids</td><td>30–45 min avant l'entraînement</td><td>+3–7% de performance, réduction de la perception de l'effort, meilleure mobilisation des graisses</td></tr>
+        <tr><td>Vitamine D3</td><td>2000–4000 UI/jour</td><td>Avec un repas contenant des lipides</td><td>Santé hormonale (testostérone), immunité, santé osseuse. Carence très fréquente en France.</td></tr>
+        <tr><td>Oméga-3 (EPA+DHA)</td><td>2–3 g/jour</td><td>Avec les repas</td><td>Anti-inflammatoire, soutien à la synthèse protéique musculaire, santé cardiovasculaire</td></tr>
+        <tr><td>Magnésium bisglycinate</td><td>300–400 mg/jour</td><td>Le soir, avant le coucher</td><td>Qualité du sommeil, réduction du cortisol, fonction neuromusculaire</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box">
+      <strong>Ce que tu n'as pas besoin d'acheter :</strong> brûleurs de graisse, boosters de testostérone en vente libre, BCAA (inutiles si l'apport protéique est suffisant), glutamine, gainers (souvent du sucre et des calories vides). Économise ton argent.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="block">
+    <div class="block-title">Règles pratiques non négociables</div>
+    <ul class="custom-list">
+      <li><strong>Priorité aux aliments entiers :</strong> 80% minimum de ton alimentation doit venir d'aliments non transformés. Les 20% restants sont de la flexibilité. Ce ratio est ce qui rend ce programme tenable à long terme.</li>
+      <li><strong>Hydratation :</strong> 35–40 ml/kg de poids corporel par jour. Ajouter 500–750 ml par heure d'entraînement intense. Une déshydratation de 2% réduit la force de 10–15%.</li>
+      <li><strong>Sommeil — le facteur le plus sous-estimé :</strong> 7 à 9 heures par nuit. Une nuit à 5h réduit la synthèse protéique musculaire de 18% le lendemain. Le sommeil n'est pas du repos passif — c'est le moment où le muscle se construit.</li>
+      <li><strong>Tracer sans obsession :</strong> Pèse tes aliments au début (2–4 semaines) pour calibrer ton intuition. Ensuite, une estimation visuelle est suffisante. L'objectif est la précision raisonnée, pas le perfectionnisme anxiogène.</li>
+      <li><strong>Progression hebdomadaire :</strong> Augmente la charge ou le volume d'une séance à l'autre seulement si le RPE de la semaine précédente était en dessous de la cible. Ne progresse jamais mécaniquement si tu n'y es pas prêt.</li>
+    </ul>
+  </div>
+
+</div>
+</div><!-- end page-nutrition -->
+
+<footer>
+  Performance Élite : Transformation — Guide Scientifique de Recomposition Corporelle &nbsp;·&nbsp; Toutes les données sont basées sur la recherche en sciences de l'effort
+</footer>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const order = ['intro','phase1','phase2','phase3','nutrition'];
+  tabs[order.indexOf(id)].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
